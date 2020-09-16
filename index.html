@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Project 1</title>
+    <style>canvas{ border: 1px solid black; }</style>
+    
+	<script>
+        "use strict";
+        const canvasWidth = 700, canvasHeight = 600;
+        let ctx;
+        
+        window.onload = init;
+     
+        let divergence = 13;
+        let n;
+        let c;
+        let color, x, y, x2, y2, a, r;
+        let count = 0;
+        let cMax = 5;
+        let nMax = 4;
+        let dMax = 20;
+        let size = 100; 
+
+        function init(){
+            ctx = canvas.getContext("2d");
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            ctx.fillRect(0,0,canvasWidth,canvasHeight);
+            canvas.onclick = canvasClicked;
+            loop();
+        }
+
+        function loop(){
+
+            setTimeout(loop,1000/12);
+            ctx.save();
+            ctx.fillStyle = 'black';
+            ctx.globalAlpha = 1/12;
+            ctx.fillRect(0,0,canvasWidth,canvasHeight);
+            ctx.restore();
+
+        }
+
+        function firework(x,y){
+            
+            //TODO make some control buttons and sliders to change the settings of the fire work
+            //TODO make some preset colors of fireworks for different holodays.
+            
+            a = n * ah6595LIB.dtr(divergence);
+            r = c * Math.sqrt(n);
+            //console.log(a,r);
+
+            x2 = r * Math.cos(a) + x;
+            y2 = r * Math.sin(a) + y;
+            //console.log(x2,y2);
+            // color from blue circle to purple circle
+            // let color = `rgb(${n % 256},0,255)`;
+            //drawCircle(ctx,x,y,2,color);
+
+            // rainbow color
+            let aDegrees = (n * divergence) % 361;
+            let color = `hsl(${aDegrees},100%,50%)`;
+
+            //stripes of purple and blue
+            // let aDegrees = (n * divergence) % 256;
+            // let color = `rgb(${aDegrees},0,255)`;
+            
+            
+            ah6595LIB.drawCircle(ctx,x2,y2,3,color);
+            n++;
+            
+        }
+
+        function canvasClicked(e){
+            let rect = e.target.getBoundingClientRect();
+            let mouseX = e.clientX - rect.x;
+            let mouseY = e.clientY - rect.y;
+            x = mouseX;
+            y = mouseY;
+            console.log(mouseX,mouseY);
+            n = ah6595LIB.getRandomInt(3,nMax);
+            c = ah6595LIB.getRandomInt(3,cMax);
+            divergence = ah6595LIB.getRandomInt(10,dMax);
+            for (let i = 0; i < size ; i++){
+                
+                firework(x,y);
+            }
+        }
+
+
+    </script>
+    <script src = "src/ah6595LIB.js"></script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+</body>
+</html>
