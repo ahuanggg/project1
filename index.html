@@ -3,7 +3,26 @@
 <head>
 	<meta charset="utf-8" />
 	<title>Project 1</title>
-    <style>canvas{ border: 1px solid black; }</style>
+    <style>
+    canvas{ border: 1px solid black; }
+    
+    .myslider {
+    -webkit-appearance: none;
+    background: lightgray  ;
+    width: 50%;
+    height: 20px;
+    opacity: 2;
+    }
+
+    .rangeslider{
+    width: 50%;
+    }
+
+    .myslider:hover {
+    opacity: 1;
+    }
+
+    </style>
     
 	<script>
         "use strict";
@@ -12,7 +31,11 @@
         
         window.onload = init;
      
-        let divergence = 13;
+        //user controlling slides and buttons for values
+        
+
+
+        let divergence = 1;
         let n;
         let c;
         let color, x, y, x2, y2, a, r;
@@ -20,7 +43,7 @@
         let cMax = 5;
         let nMax = 4;
         let dMax = 20;
-        let size = 100; 
+        let size = 500; 
 
         function init(){
             ctx = canvas.getContext("2d");
@@ -29,6 +52,15 @@
             ctx.fillRect(0,0,canvasWidth,canvasHeight);
             canvas.onclick = canvasClicked;
             loop();
+            setup();
+            
+        }
+
+        function setup() {
+            document.querySelector('#sizeSlider').onchange = function(e){
+                size = e.target.value;
+                document.querySelector('#sizeOutput').innerHTML = e.target.value;
+            };
         }
 
         function loop(){
@@ -79,9 +111,17 @@
             x = mouseX;
             y = mouseY;
             console.log(mouseX,mouseY);
-            n = ah6595LIB.getRandomInt(3,nMax);
-            c = ah6595LIB.getRandomInt(3,cMax);
-            divergence = ah6595LIB.getRandomInt(10,dMax);
+            //n = ah6595LIB.getRandomInt(3,nMax);
+            //c = ah6595LIB.getRandomInt(3,cMax);
+            //divergence = ah6595LIB.getRandomInt(10,dMax);
+            //good numbers n = 3 c = 5 d = 10;
+            // n changes the starting position kinda 100 is limit 
+            // c is the disperceness of the dots 15 is limit
+            // d is the design 1000, 750, 500, 250, 100, 50, 25, 10 is normal
+            n = 3;
+            c = 8;
+            divergence = 10;
+
             for (let i = 0; i < size ; i++){
                 
                 firework(x,y);
@@ -94,6 +134,11 @@
 </head>
 <body>
 <canvas id="canvas"></canvas>
+
+<div class="rangeslider"> 
+    <input type="range" min="1" max="1000" value="500" class="myslider" id="sizeSlider"> 
+    Value: <span id="sizeOutput"></span></p> 
+  </div> 
 
 </body>
 </html>
