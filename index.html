@@ -2,143 +2,75 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
-	<title>Project 1</title>
-    <style>
-    canvas{ border: 1px solid black; }
-    
-    .myslider {
-    -webkit-appearance: none;
-    background: lightgray  ;
-    width: 50%;
-    height: 20px;
-    opacity: 2;
-    }
-
-    .rangeslider{
-    width: 50%;
-    }
-
-    .myslider:hover {
-    opacity: 1;
-    }
-
-    </style>
-    
-	<script>
-        "use strict";
-        const canvasWidth = 700, canvasHeight = 600;
-        let ctx;
-        
-        window.onload = init;
-     
-        //user controlling slides and buttons for values
-        
-
-
-        let divergence = 1;
-        let n;
-        let c;
-        let color, x, y, x2, y2, a, r;
-        let count = 0;
-        let cMax = 5;
-        let nMax = 4;
-        let dMax = 20;
-        let size = 500; 
-
-        function init(){
-            ctx = canvas.getContext("2d");
-            canvas.width = canvasWidth;
-            canvas.height = canvasHeight;
-            ctx.fillRect(0,0,canvasWidth,canvasHeight);
-            canvas.onclick = canvasClicked;
-            loop();
-            setup();
-            
-        }
-
-        function setup() {
-            document.querySelector('#sizeSlider').onchange = function(e){
-                size = e.target.value;
-                document.querySelector('#sizeOutput').innerHTML = e.target.value;
-            };
-        }
-
-        function loop(){
-
-            setTimeout(loop,1000/12);
-            ctx.save();
-            ctx.fillStyle = 'black';
-            ctx.globalAlpha = 1/12;
-            ctx.fillRect(0,0,canvasWidth,canvasHeight);
-            ctx.restore();
-
-        }
-
-        function firework(x,y){
-            
-            //TODO make some control buttons and sliders to change the settings of the fire work
-            //TODO make some preset colors of fireworks for different holodays.
-            
-            a = n * ah6595LIB.dtr(divergence);
-            r = c * Math.sqrt(n);
-            //console.log(a,r);
-
-            x2 = r * Math.cos(a) + x;
-            y2 = r * Math.sin(a) + y;
-            //console.log(x2,y2);
-            // color from blue circle to purple circle
-            // let color = `rgb(${n % 256},0,255)`;
-            //drawCircle(ctx,x,y,2,color);
-
-            // rainbow color
-            let aDegrees = (n * divergence) % 361;
-            let color = `hsl(${aDegrees},100%,50%)`;
-
-            //stripes of purple and blue
-            // let aDegrees = (n * divergence) % 256;
-            // let color = `rgb(${aDegrees},0,255)`;
-            
-            
-            ah6595LIB.drawCircle(ctx,x2,y2,3,color);
-            n++;
-            
-        }
-
-        function canvasClicked(e){
-            let rect = e.target.getBoundingClientRect();
-            let mouseX = e.clientX - rect.x;
-            let mouseY = e.clientY - rect.y;
-            x = mouseX;
-            y = mouseY;
-            console.log(mouseX,mouseY);
-            //n = ah6595LIB.getRandomInt(3,nMax);
-            //c = ah6595LIB.getRandomInt(3,cMax);
-            //divergence = ah6595LIB.getRandomInt(10,dMax);
-            //good numbers n = 3 c = 5 d = 10;
-            // n changes the starting position kinda 100 is limit 
-            // c is the disperceness of the dots 15 is limit
-            // d is the design 1000, 750, 500, 250, 100, 50, 25, 10 is normal
-            n = 3;
-            c = 8;
-            divergence = 10;
-
-            for (let i = 0; i < size ; i++){
-                
-                firework(x,y);
-            }
-        }
-
-
-    </script>
+    <title>Project 1</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src = "src/index.js"></script>
     <script src = "src/ah6595LIB.js"></script>
 </head>
 <body>
+
 <canvas id="canvas"></canvas>
 
-<div class="rangeslider"> 
-    <input type="range" min="1" max="1000" value="500" class="myslider" id="sizeSlider"> 
-    Value: <span id="sizeOutput"></span></p> 
-  </div> 
+<div id="container">
+
+    <div id='title'>
+        Firework Simulator!!! 
+    </div>
+    
+
+    <div id='header2'>
+        Click around to start
+    </div>
+
+    <div class="rangeslider"> 
+        <input type="range" min="1" max="1000" value="500" class="myslider" id="sizeSlider"> 
+        Size Value: <span id="sizeOutput">500</span></p> 
+    </div> 
+
+    <div class="rangeslider"> 
+        <input type="range" min="1" max="100" value="50" class="myslider" id="nSlider"> 
+        N Value: <span id="nOutput">50</span></p> 
+    </div> 
+
+    <div class="rangeslider"> 
+        <input type="range" min="1" max="10" value="5" class="myslider" id="cSlider"> 
+        C Value: <span id="cOutput">5</span></p> 
+    </div> 
+
+
+    <p><label for="dValue">Choose a D value: </label></p>
+
+    <select name="dValue" id="dValue">
+        <option value="1000">1000</option>
+        <option value="750">750</option>
+        <option value="500">500</option>
+        <option value="250">250</option>
+        <option value="100" selected>100</option>
+        <option value="50">50</option>
+        <option value="25">25</option>
+        <option value="10">10</option>
+        <option value="5">5</option>
+        <option value="3">3</option>
+        <option value="1">1</option>
+    </select>
+
+    <p><label for="colorVal">Choose a holiday color preset: </label></p>   
+
+    <select name="colorVal" id="colorVal">
+        <option value="1" selected >Independence Day</option>
+        <option value="2">Christmas</option>
+        <option value="3">LGBTQ</option>
+        <option value="4">Halloween</option>
+        <option value="5">New Years</option>
+        <option value="6">Valentines Day</option>
+        <option value="7">St. Patricks Day</option>
+        <option value="8">Chinese New Years</option>
+        <option value="9">Thanksgiving</option>
+    </select>
+
+
+
+</div>
 
 </body>
 </html>
